@@ -7,7 +7,7 @@ GLIB_VERSION="2.15.4"
 GLIB_BUILD_DIR="${OPENSHIFT_BUILD_DEPENDENCIES_DIR}/glib-${GLIB_VERSION}"
 GLIB_INSTALL_DIR="${OPENSHIFT_BUILD_DEPENDENCIES_DIR}/glib"
 
-if [ ! -d $GLIB_INSTALL_DIR ]
+if [ ! -x "$GLIB_INSTALL_DIR" ]
 then
 
 	# Install directory
@@ -28,7 +28,7 @@ then
 	make all install
 	popd >/dev/null
 
-	rm -f ${GLIB_BUILD_DIR}.tar.bz2
+	rm -f ${GLIB_BUILD_DIR}.tar.gz
 	rm -rf ${GLIB_BUILD_DIR}
 
 
@@ -41,10 +41,12 @@ export PKG_CONFIG_PATH=${GLIB_INSTALL_DIR}/lib/pkgconfig/
 
 RRD_VERSION="1.4.8"
 
-RRD_BUILD_DIR="${OPENSHIFT_BUILD_DEPENDENCIES_DIR}/rrdtool-${RRD_VERSION}"
-RRD_INSTALL_DIR="${OPENSHIFT_BUILD_DEPENDENCIES_DIR}/rrdtool"
+RRD_BUILD_DIR="${OPENSHIFT_BUILD_DEPENDENCIES_DIR}rrdtool-${RRD_VERSION}"
+RRD_INSTALL_DIR="${OPENSHIFT_BUILD_DEPENDENCIES_DIR}rrdtool"
 
-if [ ! -d $RDD_INSTALL_DIR ]
+echo $RRD_INSTALL_DIR
+
+if [ ! -x "$RDD_INSTALL_DIR" ]
 then
 	# Install directory
 	mkdir -p ${OPENSHIFT_BUILD_DEPENDENCIES_DIR}/rrdtool
@@ -64,7 +66,7 @@ then
 	make all install
 	popd >/dev/null
 
-	rm -f ${RRD_BUILD_DIR}.tar.bz2
+	rm -f ${RRD_BUILD_DIR}.tar.gz
 	rm -rf ${RRD_BUILD_DIR}
 
 
@@ -72,10 +74,11 @@ then
 	echo "${RRD_VERSION} installed successfully."
 fi
 
-export CFLAGS="-I${OPENSHIFT_BUILD_DEPENDENCIES_DIR}/rrdtool/include"
+export CFLAGS="-I${OPENSHIFT_BUILD_DEPENDENCIES_DIR}rrdtool/include"
 export LIBS="-lm -lrrd -lrrd_th"
-export LDFLAGS="-L${OPENSHIFT_BUILD_DEPENDENCIES_DIR}/rrdtool/lib"
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${OPENSHIFT_BUILD_DEPENDENCIES_DIR}/rrdtool/lib"
+export LDFLAGS="-L${OPENSHIFT_BUILD_DEPENDENCIES_DIR}rrdtool/lib"
+export LD_LIBRARY_PATH="${OPENSHIFT_BUILD_DEPENDENCIES_DIR}rrdtool/lib:$LD_LIBRARY_PATH"
+
 
 COLLECTD_VERSION="5.4.0"
 
