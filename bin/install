@@ -1,5 +1,41 @@
 #!/bin/bash
 
+GLIB_VERSION="2.15.4"
+
+GLIB_BUILD_DIR="${OPENSHIFT_BUILD_DEPENDENCIES_DIR}/glib-${GLIB_VERSION}"
+GLIB_INSTALL_DIR="${OPENSHIFT_BUILD_DEPENDENCIES_DIR}/glib"
+
+if [ ! -x "$GLIB_INSTALL_DIR" ]
+then
+
+	# Install directory
+	mkdir -p ${OPENSHIFT_BUILD_DEPENDENCIES_DIR}/glib
+
+	# Unpack glib
+	pushd $OPENSHIFT_BUILD_DEPENDENCIES_DIR >/dev/null
+	rm -rf glib-${GLIB_VERSION}* &> /dev/null
+	client_result $(wget http://oss.oetiker.ch/rrdtool/pub/libs/glib-${GLIB_VERSION}.tar.gz)
+	client_result "${GLIB_VERSION} downloaded."
+	tar xzvf glib-${GLIB_VERSION}.tar.gz
+	popd >/dev/null
+
+	# Build glib
+	client_result "Building glib"
+	pushd $GLIB_BUILD_DIR >/dev/null
+	./configure --prefix=$GLIB_INSTALL_DIR
+	make all install
+	popd >/dev/null
+
+	rm -f ${GLIB_BUILD_DIR}.tar.gz
+	rm -rf ${GLIB_BUILD_DIR}
+
+
+	ln -sf $GLIB_INSTALL_DIR $OPENSHIFT_GLIB_DIR/glib/$GLIB_VERSION
+	echo "${GLIB_VERSION} installed successfully."
+
+fi
+
+export PKG_CONFIG_PATH=${GLIB_INSTALL_DIR}/lib/pkgconfig/
 
 COLLECTD_VERSION="5.4.0"
 

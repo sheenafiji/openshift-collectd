@@ -8,9 +8,9 @@ Version: '5.4.0'
 Versions:
 - '5.4.0'
 Cartridge-Version: 0.0.1
-Cartridge-Vendor: mfojtik
+Cartridge-Vendor: celer
 License: GPL
-Vendor: mfojtik
+Vendor: celer
 Categories:
 - service
 - embedded
