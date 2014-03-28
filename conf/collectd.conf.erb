@@ -1,9 +1,10 @@
 Hostname    "<%=ENV['OPENSHIFT_GEAR_DNS']%>"
 
 LoadPlugin logfile
+TypesDB "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>config/types.db"
 
 <Plugin logfile>
-  LogLevel info
+  LogLevel debug
   File "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>log/collectd.log"
   Timestamp true
   PrintSeverity false
