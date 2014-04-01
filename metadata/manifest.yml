@@ -7,7 +7,7 @@ Description: collectd is a daemon which collects system performance statistics
 Version: '5.4.0'
 Versions:
 - '5.4.0'
-Cartridge-Version: 0.0.1
+Cartridge-Version: 5.4.0
 Cartridge-Vendor: celer
 License: GPL
 Vendor: celer
@@ -17,7 +17,7 @@ Categories:
 Website: http://collectd.org
 Group-Overrides:
         -components:
-                - collectd
+                - collectd-5.4.0
                 - web_framework
 Provides:
 - collectd-5.4.0
