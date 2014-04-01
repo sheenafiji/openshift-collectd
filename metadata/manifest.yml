@@ -27,10 +27,6 @@ Group-Overrides:
 Source-Url: https://github.com/celer/openshift-collectd.git
 Endpoints:
   - Private-IP-Name: COLLECTD
-    Private-Port-Name: HTTP_PORT
-    Private-Port: 8080
-    Public-Port-Name: COLLECTD_HTTP_PORT
-    Mappings:
-      - Frontend: "/collectd"
-        Backend: ""
-        Options: { "file":"~/collectd/data/" }
+    Private-Port-Name: PORT
+    Private-Port: 25827
+    Public-Port-Name: COLLECTD_PORT
