@@ -14,7 +14,12 @@ Vendor: celer
 Categories:
 - service
 - embedded
+- plugin
 Website: http://collectd.org
+Group-Overrides:
+        -components:
+                - collectd
+                - web_framework
 Provides:
 - collectd-5.4.0
 - collectd
