@@ -5,5 +5,5 @@ INTERVAL="${COLLECTD_INTERVAL:-60}"
 
 while sleep "$INTERVAL"; do
   VALUE=$(oo-cgroup-read memory.usage_in_bytes)
-  echo "PUTVAL \"$HOSTNAME/gear/used/memory\" interval=$INTERVAL N:$VALUE"
+  echo "PUTVAL \"$HOSTNAME/used/memory\" interval=$INTERVAL N:$VALUE"
 done

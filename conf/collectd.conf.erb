@@ -1,7 +1,7 @@
 Hostname    "<%=ENV['OPENSHIFT_GEAR_DNS']%>"
 
 LoadPlugin logfile
-TypesDB "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>config/types.db"
+TypesDB "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>collectd/5.4.0/share/collectd/types.db"
 
 <Plugin logfile>
   LogLevel debug
