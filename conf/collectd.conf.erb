@@ -1,4 +1,6 @@
 Hostname    "<%=ENV['OPENSHIFT_GEAR_DNS']%>"
+BaseDir "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>collectd/5.4.0/"
+PluginDir "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>collectd/5.4.0/lib/collectd"
 
 LoadPlugin logfile
 TypesDB "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>collectd/5.4.0/share/collectd/types.db"
@@ -14,6 +16,13 @@ LoadPlugin exec
 
 <Plugin exec>
   Exec "<%=ENV['USER']%>" "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>/bin/scripts/cgroup_memory"
+</Plugin>
+
+LoadPlugin rrdtool
+
+<Plugin "rrdtool">
+  DataDir "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>data"
+  StoreRates true
 </Plugin>
 
 LoadPlugin csv
