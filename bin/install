@@ -72,6 +72,11 @@ then
 	echo "${RRD_VERSION} installed successfully."
 fi
 
+export CFLAGS="-I${OPENSHIFT_BUILD_DEPENDENCIES_DIR}rrdtool/include"
+export LIBS="-lm -lrrd -lrrd_th"
+export LDFLAGS="-L${OPENSHIFT_BUILD_DEPENDENCIES_DIR}rrdtool/lib"
+export LD_LIBRARY_PATH="${OPENSHIFT_BUILD_DEPENDENCIES_DIR}rrdtool/lib:$LD_LIBRARY_PATH"
+
 COLLECTD_VERSION="5.4.0"
 
 COLLECTD_BUILD_DIR="${OPENSHIFT_BUILD_DEPENDENCIES_DIR}/collectd-${COLLECTD_VERSION}"
