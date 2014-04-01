@@ -8,6 +8,7 @@ Version: '5.4.0'
 Versions:
 - '5.4.0'
 Cartridge-Version: 5.4.0
+Cartridge-Vendor: celer
 License: GPL
 Categories:
 - embedded
@@ -15,7 +16,7 @@ Categories:
 Website: http://collectd.org
 Group-Overrides:
         -components:
-                - collectd-5.4.0
+                - celer-collectd-5.4.0
                 - web_framework
 Provides:
 - collectd-5.4.0
