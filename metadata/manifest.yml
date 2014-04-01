@@ -25,3 +25,12 @@ Group-Overrides:
   - collectd-5.4.0
   - web_framework
 Source-Url: https://github.com/celer/openshift-collectd.git
+Endpoints:
+  - Private-IP-Name: COLLECTD
+    Private-Port-Name: HTTP_PORT
+    Private-Port: 8080
+    Public-Port-Name: COLLECTD_HTTP_PORT
+    Mappings:
+      - Frontend: "/collectd"
+        Backend: ""
+        Options: { "file":"~/collectd/data/" }
