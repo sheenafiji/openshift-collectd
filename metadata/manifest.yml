@@ -7,21 +7,21 @@ Description: collectd is a daemon which collects system performance statistics
 Version: '5.4.0'
 Versions:
 - '5.4.0'
-Cartridge-Version: 5.4.0
+Cartridge-Version: 0.0.1
 Cartridge-Vendor: celer
 License: GPL
 Categories:
 - embedded
 - plugin
 Website: http://collectd.org
-Group-Overrides:
-        -components:
-                - celer-collectd-5.4.0
-                - web_framework
 Provides:
 - collectd-5.4.0
 - collectd
 Scaling:
   Min: 1
-  Max: 1
+  Max: -1
+Group-Overrides:
+- components:
+  - collectd-5.4.0
+  - web_framework
 Source-Url: https://github.com/celer/openshift-collectd.git
