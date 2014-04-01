@@ -12,7 +12,6 @@ Cartridge-Vendor: celer
 License: GPL
 Vendor: celer
 Categories:
-- service
 - embedded
 - plugin
 Website: http://collectd.org
