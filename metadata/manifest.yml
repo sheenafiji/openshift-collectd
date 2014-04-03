@@ -30,3 +30,10 @@ Endpoints:
     Private-Port-Name: PRIVATE_PORT
     Private-Port: 25827
     Public-Port-Name: PUBLIC_PORT
+Subscribes:
+  set-connectd-connection-info:
+    Type: "ENV:NET_TCP:db:connectd:connection-info"
+    Required: false
+Publishes:
+  publish-connectd-connection-info:
+    Type: "ENV:NET_TCP:db:connectd:connection-info"
