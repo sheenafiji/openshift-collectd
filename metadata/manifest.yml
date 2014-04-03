@@ -31,9 +31,9 @@ Endpoints:
     Private-Port: 25827
     Public-Port-Name: PUBLIC_PORT
 Subscribes:
-  set-connectd-connection-info:
-    Type: "ENV:NET_TCP:db:connectd:connection-info"
+  set-collectd-collection-info:
+    Type: "ENV:NET_TCP:db:collectd:connection-info-v1"
     Required: false
 Publishes:
-  publish-connectd-connection-info:
-    Type: "ENV:NET_TCP:db:connectd:connection-info"
+  publish-collectd-collection-info:
+    Type: "ENV:NET_TCP:db:collectd:connection-info-v1"
