@@ -18,16 +18,28 @@ LoadPlugin exec
   Exec "<%=ENV['USER']%>" "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>/bin/scripts/cgroup_memory"
 </Plugin>
 
-LoadPlugin rrdtool
 
+LoadPlugin network
+
+<% if @ENV['OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT'] %>
+
+<Plugin "network">
+  Server "<%=ENV['OPENSHIFT_APP_DNS']%>" "<%=ENV['OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT']%>"
+</Plugin>
+
+<% else %>
+
+<Plugin "network">
+  Listen "<%=ENV['OPENSHIFT_COLLECTD_PRIVATE_IP']%>" "<%=ENV['OPENSHIFT_COLLECTD_PRIVATE_PORT']%>"
+</Plugin>
+
+
+LoadPlugin rrdtool
 <Plugin "rrdtool">
   DataDir "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>data"
   StoreRates true
 </Plugin>
 
-LoadPlugin csv
+<% end %>
 
-<Plugin "csv">
-  DataDir "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>data"
-  StoreRates true
-</Plugin>
+
