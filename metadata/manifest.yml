@@ -26,7 +26,7 @@ Group-Overrides:
   - web_framework
 Source-Url: https://github.com/celer/openshift-collectd.git
 Endpoints:
-  - Private-IP-Name: COLLECTD
-    Private-Port-Name: PORT
+  - Private-IP-Name: PRIVATE_IP
+    Private-Port-Name: PRIVATE_PORT
     Private-Port: 25827
-    Public-Port-Name: COLLECTD_PORT
+    Public-Port-Name: PUBLIC_PORT
