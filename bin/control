@@ -8,15 +8,9 @@ COLLECTD_PATH=${OPENSHIFT_COLLECTD_DIR}/collectd/5.4.0
 COLLECTD_PID_FILE=$OPENSHIFT_COLLECTD_DIR/run/collectd.pid
 
 function start() {
-    if [ -z pgrep socat ]; then
-      echo "socat running"
-    else
-      echo "socat not running"
-    fi
-    if [ ! -f "${COLLECTD_PID_FILE}" ]
-    then
-      echo "Starting collectd cartridge"
 
+    # check SOCAT first
+    if [ -z "$(pgrep socat)" ]; then
       if [ "$OPENSHIFT_APP_DNS" == "$OPENSHIFT_GEAR_DNS" ]
       then 
         socat tcp4-listen:$OPENSHIFT_COLLECTD_PRIVATE_PORT,bind=$OPENSHIFT_COLLECTD_PRIVATE_IP,reuseaddr,fork UDP:$OPENSHIFT_COLLECTD_PRIVATE_IP:$OPENSHIFT_COLLECTD_PRIVATE_PORT&
@@ -25,11 +19,21 @@ function start() {
         if [ "$OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT" != "" ]
         then
           socat -T10 udp4-recvfrom:$OPENSHIFT_COLLECTD_PRIVATE_PORT,bind=$OPENSHIFT_COLLECTD_PRIVATE_IP,reuseaddr,fork tcp:$OPENSHIFT_APP_DNS:$OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT&
+        else
+          echo "OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT == <empty>"
         fi
       fi
 
       echo "Waiting 10 seconds to let socat start"
-      pause 10
+      pause 10 
+    else
+      echo "Socat is already running "
+    fi
+
+
+    if [ ! -f "${COLLECTD_PID_FILE}" ]
+    then
+      echo "Starting collectd cartridge"
 
       $COLLECTD_PATH/sbin/collectd \
         -C $OPENSHIFT_COLLECTD_DIR/conf/collectd.conf \
