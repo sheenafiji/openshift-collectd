@@ -33,8 +33,7 @@ Endpoints:
     Private-Port: 25827
     Public-Port-Name: PUBLIC_PORT
   - Private-IP-Name: PRIVATE_SERVER_IP
-    Private-Port-Name: PRIVATE_SERVER_PORT
-    Private-Port: 25827
+    Private-Port-Name: 25827
     Public-Port-Name: SERVER_PUBLIC_PORT
 Subscribes:
   set-collectd-collection-info:
