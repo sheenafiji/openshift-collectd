@@ -34,7 +34,7 @@ Endpoints:
     Public-Port-Name: PUBLIC_PORT
 
   - Private-IP-Name: PRIVATE_SERVER_IP
-    Private-Port-Name: 25828
+    Private-Port: 25828
     Public-Port-Name: SERVER_PUBLIC_PORT
 Subscribes:
   set-collectd-collection-info:
