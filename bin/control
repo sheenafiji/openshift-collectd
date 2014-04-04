@@ -14,7 +14,11 @@ function start() {
     then 
       socat tcp4-listen:$OPENSHIFT_COLLECTD_PRIVATE_PORT,bind=$OPENSHIFT_COLLECTD_PRIVATE_IP,reuseaddr,fork UDP:$OPENSHIFT_COLLECTD_PRIVATE_IP:$OPENSHIFT_COLLECTD_PRIVATE_PORT&
     else
-      socat -T10 udp4-recvfrom:$OPENSHIFT_COLLECTD_PRIVATE_PORT,bind=$OPENSHIFT_COLLECTD_PRIVATE_IP,reuseaddr,fork tcp:$OPENSHIFT_APP_DNS:$OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT&
+      # There appears to be a race condition between the time the public server port is published and the cartridge is started
+      if [ "$OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT" != "" ]
+      then
+      	socat -T10 udp4-recvfrom:$OPENSHIFT_COLLECTD_PRIVATE_PORT,bind=$OPENSHIFT_COLLECTD_PRIVATE_IP,reuseaddr,fork tcp:$OPENSHIFT_APP_DNS:$OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT&
+      fi
     fi
 
     $COLLECTD_PATH/sbin/collectd \
@@ -25,9 +29,9 @@ function start() {
 function stop() {
     echo "Stopping collectd cartridge"
     if [ -f "${COLLECTD_PID_FILE}" ]; then
-      kill -1 $(cat $COLLECTD_PID_FILE)
       #FIXME this is probably bad
       killall socat
+      kill -1 $(cat $COLLECTD_PID_FILE)
     fi
     return 0
 }
