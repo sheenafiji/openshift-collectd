@@ -11,12 +11,14 @@ Cartridge-Version: 0.0.1
 Cartridge-Vendor: celer
 License: GPL
 Categories:
-- embedded
-- plugin
+  - service
+  - database
+  - embedded
+  - plugin
 Website: http://collectd.org
 Provides:
-- collectd-5.4.0
-- collectd
+  - collectd-5.4.0
+  - collectd
 Scaling:
   Min: 1
   Max: -1
