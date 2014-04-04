@@ -21,10 +21,10 @@ LoadPlugin exec
 
 LoadPlugin network
 
-<% if ENV['OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT'] %>
+<% if ENV['OPENSHIFT_GEAR_DNS']!=ENV['OPENSHIFT_APP_DNS'] %>
 
 <Plugin "network">
-  Server "<%=ENV['OPENSHIFT_APP_DNS']%>" "<%=ENV['OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT']%>"
+  Server "<%=ENV['OPENSHIFT_COLLECTD_PRIVATE_IP']%>" "<%=ENV['OPENSHIFT_COLLECTD_PRIVATE_PORT']%>"
 </Plugin>
 
 <% else %>
