@@ -23,6 +23,9 @@ function start() {
         fi
       fi
 
+      echo "Waiting 10 seconds to let socat start"
+      pause 10
+
       $COLLECTD_PATH/sbin/collectd \
         -C $OPENSHIFT_COLLECTD_DIR/conf/collectd.conf \
         -P $COLLECTD_PID_FILE
