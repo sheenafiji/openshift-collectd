@@ -5,8 +5,6 @@ Architecture: x86_64
 Display-Name: collectd 5.4.0
 Description: collectd is a daemon which collects system performance statistics
 Version: '5.4.0'
-Versions:
-- '5.4.0'
 Cartridge-Version: 0.0.1
 Cartridge-Vendor: celer
 License: GPL
@@ -25,9 +23,9 @@ Scaling:
 Cart-Data:
   - Key: OPENSHIFT_COLLECTD_PUBLIC_SERVER_PORT 
 Group-Overrides:
-- components:
-  - collectd-5.4.0
-  - web_framework
+  - components:
+    - collectd-5.4.0
+    - web_framework
 Source-Url: https://github.com/celer/openshift-collectd.git
 Endpoints:
   - Private-IP-Name: PRIVATE_IP
