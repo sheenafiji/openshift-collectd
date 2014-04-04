@@ -8,6 +8,11 @@ COLLECTD_PATH=${OPENSHIFT_COLLECTD_DIR}/collectd/5.4.0
 COLLECTD_PID_FILE=$OPENSHIFT_COLLECTD_DIR/run/collectd.pid
 
 function start() {
+    if [ -z pgrep socat ]; then
+      echo "socat running"
+    else
+      echo "socat not running"
+    fi
     if [ ! -f "${COLLECTD_PID_FILE}" ]
     then
       echo "Starting collectd cartridge"
