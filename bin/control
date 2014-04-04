@@ -8,22 +8,27 @@ COLLECTD_PATH=${OPENSHIFT_COLLECTD_DIR}/collectd/5.4.0
 COLLECTD_PID_FILE=$OPENSHIFT_COLLECTD_DIR/run/collectd.pid
 
 function start() {
-    echo "Starting collectd cartridge"
+    if [ ! -f "${COLLECTD_PID_FILE}" ]
+    then
+      echo "Starting collectd cartridge"
 
-    if [ "$OPENSHIFT_APP_DNS" == "$OPENSHIFT_GEAR_DNS" ]
-    then 
-      socat tcp4-listen:$OPENSHIFT_COLLECTD_PRIVATE_PORT,bind=$OPENSHIFT_COLLECTD_PRIVATE_IP,reuseaddr,fork UDP:$OPENSHIFT_COLLECTD_PRIVATE_IP:$OPENSHIFT_COLLECTD_PRIVATE_PORT&
-    else
-      # There appears to be a race condition between the time the public server port is published and the cartridge is started
-      if [ "$OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT" != "" ]
-      then
-      	socat -T10 udp4-recvfrom:$OPENSHIFT_COLLECTD_PRIVATE_PORT,bind=$OPENSHIFT_COLLECTD_PRIVATE_IP,reuseaddr,fork tcp:$OPENSHIFT_APP_DNS:$OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT&
+      if [ "$OPENSHIFT_APP_DNS" == "$OPENSHIFT_GEAR_DNS" ]
+      then 
+        socat tcp4-listen:$OPENSHIFT_COLLECTD_PRIVATE_PORT,bind=$OPENSHIFT_COLLECTD_PRIVATE_IP,reuseaddr,fork UDP:$OPENSHIFT_COLLECTD_PRIVATE_IP:$OPENSHIFT_COLLECTD_PRIVATE_PORT&
+      else
+        # There appears to be a race condition between the time the public server port is published and the cartridge is started
+        if [ "$OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT" != "" ]
+        then
+          socat -T10 udp4-recvfrom:$OPENSHIFT_COLLECTD_PRIVATE_PORT,bind=$OPENSHIFT_COLLECTD_PRIVATE_IP,reuseaddr,fork tcp:$OPENSHIFT_APP_DNS:$OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT&
+        fi
       fi
-    fi
 
-    $COLLECTD_PATH/sbin/collectd \
-      -C $OPENSHIFT_COLLECTD_DIR/conf/collectd.conf \
-      -P $COLLECTD_PID_FILE
+      $COLLECTD_PATH/sbin/collectd \
+        -C $OPENSHIFT_COLLECTD_DIR/conf/collectd.conf \
+        -P $COLLECTD_PID_FILE
+    else
+      echo "Collectd is already running"
+    fi
 }
 
 function stop() {
@@ -32,6 +37,8 @@ function stop() {
       #FIXME this is probably bad
       killall socat
       kill -1 $(cat $COLLECTD_PID_FILE)
+      killall collectd
+      rm -rf "${COLLECTD_PID_FILE}"
     fi
     return 0
 }
