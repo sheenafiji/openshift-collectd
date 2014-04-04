@@ -36,8 +36,8 @@ Endpoints:
     Public-Port-Name: PUBLIC_PORT
 Subscribes:
   set-collectd-collection-info:
-    Type: "ENV:NET_TCP:db:collectd"
+    Type: "ENV:NET_TCP:db:collectd:public-port"
     Required: false
 Publishes:
   publish-collectd-collection-info:
-    Type: "ENV:NET_TCP:db:collectd"
+    Type: "ENV:NET_TCP:db:collectd:public-port"
