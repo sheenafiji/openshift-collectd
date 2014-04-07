@@ -32,6 +32,13 @@ Endpoints:
     Private-Port-Name: PRIVATE_PORT
     Private-Port: 25827
     Public-Port-Name: PUBLIC_PORT
+  - Private-IP-Name: PRIVATE_HTTP_IP
+    Private-Port-Name: PRIVATE_HTTP_PORT
+    Private-Port: 7873
+    Mappings:
+        - Frontend: "/collectd"
+          Backend: "/"
+          Options: { }
 Subscribes:
   set-collectd-connection-info:
     Type: "ENV:NET_TCP:db:collectd:public-port"
