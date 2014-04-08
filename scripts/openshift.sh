@@ -32,7 +32,7 @@ do
     E=`echo $CLI | cut -f 1 -d "="`
     K=`eval echo "/usr/bin/time --format \'%R\' \\\$\$E -e \'quit\' 2>&1"`
     R=`eval $K 2>&1`
-    echo "PUTVAL \"$HOSTNAME/$HOST/conn_time\" interval=$INTERVAL N:$R"
+    echo "PUTVAL \"$HOSTNAME/conn_to_$HOST/conn_time\" interval=$INTERVAL N:$R"
   done 
   IFS=OLD_IFS
    

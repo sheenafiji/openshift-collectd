@@ -23,13 +23,13 @@ LoadPlugin exec
 LoadPlugin mysql
 <Plugin "mysql">
 	<% ENV.each do |env| 
-		m=/^DSS_DATASTORE_NAME_(.+)_DATABASE/.match(env[0])
+		m=/^DSS_DATASTORE_NAME_(.+)/.match(env[0])
 		if m %>
 		<Database "<%=ENV[env[0]]%>">
-		   Host "<%=ENV['DSS_HOST_'+m[1]+'_DATABASE']%>"
-		   User "<%=ENV['DSS_ADMIN_'+m[1]+'_DATABASE']%>"
-		   Password "<%=ENV['DSS_PASSWORD_'+m[1]+'_DATABASE']%>"
-		   Port "<%=ENV['DSS_PORT_'+m[1]+'_DATABASE']%>"
+		   Host "<%=ENV['DSS_HOST_'+m[1] ]%>"
+		   User "<%=ENV['DSS_ADMIN_'+m[1] ]%>"
+		   Password "<%=ENV['DSS_PASSWORD_'+m[1] ]%>"
+		   Port "<%=ENV['DSS_PORT_'+m[1] ]%>"
 		</Database>
 		<% end 
 	end %>
