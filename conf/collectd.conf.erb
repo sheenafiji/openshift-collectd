@@ -20,22 +20,6 @@ LoadPlugin exec
 </Plugin>
 
 
-LoadPlugin mysql
-<Plugin "mysql">
-	<% ENV.each do |env| 
-		envvar = env[0].to_s;
-		m=/^DSS_DATASTORE_NAME_(.+)/.match(envvar)
-		m.untaint
-		if m %>
-		<Database "<%=ENV[m[0].untaint]%>">
-		   Host "<%=ENV[('DSS_HOST_'+m[1]).untaint]%>"
-		   User "<%=ENV[('DSS_ADMIN_'+m[1]).untaint ]%>"
-		   Password "<%=ENV[('DSS_PASSWORD_'+m[1]).untaint]%>"
-		   Port "<%=ENV[('DSS_PORT_'+m[1]).untaint]%>"
-		</Database>
-		<% end 
-	end %>
-</Plugin>
 
 LoadPlugin processes
 <Plugin "processes">
@@ -84,5 +68,21 @@ LoadPlugin rrdtool
   StoreRates true
 </Plugin>
 
+LoadPlugin mysql
+<Plugin "mysql">
+	<% ENV.each do |env| 
+		envvar = env[0].to_s;
+		m=/^DSS_DATASTORE_NAME_(.+)/.match(envvar)
+		m.untaint
+		if m %>
+		<Database "<%=ENV[m[0].untaint]%>">
+		   Host "<%=ENV[('DSS_HOST_'+m[1]).untaint]%>"
+		   User "<%=ENV[('DSS_ADMIN_'+m[1]).untaint ]%>"
+		   Password "<%=ENV[('DSS_PASSWORD_'+m[1]).untaint]%>"
+		   Port "<%=ENV[('DSS_PORT_'+m[1]).untaint]%>"
+		</Database>
+		<% end 
+	end %>
+</Plugin>
 
 <% end %>
