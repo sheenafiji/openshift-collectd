@@ -28,16 +28,51 @@ for root, subFolders, files in os.walk(".",topdown=True):
       print "rrdFiles.push('"+root+"/"+file+"');"
 
 print """
-
+      var desc = {};
       rrdFiles.forEach(function(file){
-        $("#graphs").append("<option value='"+file+"'>"+file+"</option>");
+	var parts = file.split("/");	
+	var d = parts[1] + " " + parts[2];
+
+	if(parts[3] && /\-/.test(parts[3])){
+	        d+=" "+parts[3].split("-")[0];
+	        if(!desc[d]){ 
+ 			desc[d]=[];
+	 	}
+
+		name = parts[3].split("-")[1].replace(".rrd","");;
+		
+		desc[d].push([name,"../"+file]);
+
+	} else if(parts[3]) {
+
+	        if(!desc[d]){ 
+ 			desc[d]=[];
+	 	} 
+	
+
+		name = parts[3].replace(".rrd","");
+		desc[d].push([name,"../"+file]);
+	}
       }); 
 
 
-      $("#graphs").change(function(){
+      Object.keys(desc).forEach(function(file){
+        $("#graphs").append("<option value='"+file+"'>"+file+"</option>");
+      }); 
+
+      var load=function(){
         var graph  =($('#graphs').find(":selected").text());
-        var f = new rrdFlotAsync("mygraph","../"+graph);
+	if(desc[graph].length>1){
+	        flot = new rrdFlotMatrixAsync("mygraph",desc[graph]);
+	} else {
+	        flot = new rrdFlotAsync("mygraph",desc[graph][0][1]);
+	}
+      }
+
+      $("#graphs").change(function(){
+	load();
       });
+
 
 
     </script>

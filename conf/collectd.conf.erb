@@ -19,6 +19,22 @@ LoadPlugin exec
   Exec "<%=ENV['USER']%>" "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>/scripts/openshift.sh"
 </Plugin>
 
+
+LoadPlugin mysql
+<Plugin "mysql">
+	<% ENV.each do |env| 
+		m=/^DSS_DATASTORE_NAME_(.+)_DATABASE/.match(env[0])
+		if m %>
+		<Database "<%=ENV[env[0]]%>">
+		   Host "<%=ENV['DSS_HOST_'+m[1]+'_DATABASE']%>"
+		   User "<%=ENV['DSS_ADMIN_'+m[1]+'_DATABASE']%>"
+		   Password "<%=ENV['DSS_PASSWORD_'+m[1]+'_DATABASE']%>"
+		   Port "<%=ENV['DSS_PORT_'+m[1]+'_DATABASE']%>"
+		</Database>
+		<% end 
+	end %>
+</Plugin>
+
 LoadPlugin processes
 <Plugin "processes">
   ProcessMatch "/^java/"
