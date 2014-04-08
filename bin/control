@@ -7,6 +7,9 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENSHIFT_COLLECTD_DIR/usr/rrdtool/lib
 COLLECTD_PATH=${OPENSHIFT_COLLECTD_DIR}/collectd/5.4.0
 COLLECTD_PID_FILE=$OPENSHIFT_COLLECTD_DIR/run/collectd.pid
 
+COLLECTD_SOCAT_PID_FILE=$OPENSHIFT_COLLECTD_DIR/run/socat.pid
+COLLECTD_PYTHON_PID_FILE=$OPENSHIFT_COLLECTD_DIR/run/python.pid
+
 function start() {
 
     # check SOCAT first
@@ -14,12 +17,13 @@ function start() {
       if [ "$OPENSHIFT_APP_DNS" == "$OPENSHIFT_GEAR_DNS" ]
       then 
         socat tcp4-listen:$OPENSHIFT_COLLECTD_PRIVATE_PORT,bind=$OPENSHIFT_COLLECTD_PRIVATE_IP,reuseaddr,fork UDP:$OPENSHIFT_COLLECTD_PRIVATE_IP:$OPENSHIFT_COLLECTD_PRIVATE_PORT&
-
+        echo $! > $COLLECTD_SOCAT_PID_FILE
       else
         # There appears to be a race condition between the time the public server port is published and the cartridge is started
         if [ "$OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT" != "" ]
         then
           socat -T10 udp4-recvfrom:$OPENSHIFT_COLLECTD_PRIVATE_PORT,bind=$OPENSHIFT_COLLECTD_PRIVATE_IP,reuseaddr,fork tcp:$OPENSHIFT_APP_DNS:$OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT&
+          echo $! > $COLLECTD_SOCAT_PID_FILE
         else
           echo "OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT == <empty>"
         fi
@@ -34,6 +38,7 @@ function start() {
     then 
       # Start the simple python webserver
       (cd ${OPENSHIFT_COLLECTD_DIR}/data && python server.py > /dev/null 2>&1 )& 
+      echo $! > $COLLECTD_PYTHON_PID_FILE
     fi 
 
     if [ ! -f "${COLLECTD_PID_FILE}" ]
@@ -51,11 +56,18 @@ function start() {
 function stop() {
     echo "Stopping collectd cartridge"
     if [ -f "${COLLECTD_PID_FILE}" ]; then
-      #FIXME this is probably bad
-      killall socat
-      kill -1 $(cat $COLLECTD_PID_FILE)
-      killall collectd
+      kill -- -$(cat $COLLECTD_PID_FILE)
       rm -rf "${COLLECTD_PID_FILE}"
+    fi
+    if [ -f "${COLLECTD_SOCAT_PID_FILE}" ]; then
+      echo "Stopping collectd's socat instance $(cat $COLLECTD_SOCAT_PID_FILE)"
+      kill $(cat $COLLECTD_SOCAT_PID_FILE)
+      rm -rf "${COLLECTD_SOCAT_PID_FILE}"
+    fi
+    if [ -f "${COLLECTD_PYTHON_PID_FILE}" ]; then
+      echo "Stopping collectd's python instance $(cat $COLLECTD_PYTHON_PID_FILE)"
+      kill $(cat $COLLECTD_PYTHON_PID_FILE)
+      rm -rf "${COLLECTD_PYTHON_PID_FILE}"
     fi
     return 0
 }
