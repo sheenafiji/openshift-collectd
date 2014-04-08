@@ -37,8 +37,11 @@ function start() {
     if [ "$OPENSHIFT_APP_DNS" == "$OPENSHIFT_GEAR_DNS" ]
     then 
       # Start the simple python webserver
-      (cd ${OPENSHIFT_COLLECTD_DIR}/data && python server.py > /dev/null 2>&1 )& 
+      pushd `pwd`
+      cd ${OPENSHIFT_COLLECTD_DIR}/data 
+      python server.py > /dev/null 2>&1 & 
       echo $! > $COLLECTD_PYTHON_PID_FILE
+      popd
     fi 
 
     if [ ! -f "${COLLECTD_PID_FILE}" ]
