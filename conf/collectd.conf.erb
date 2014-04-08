@@ -4,6 +4,7 @@ PluginDir "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>collectd/5.4.0/lib/collectd"
 
 LoadPlugin logfile
 TypesDB "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>collectd/5.4.0/share/collectd/types.db"
+TypesDB "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>scripts/types.db"
 
 <Plugin logfile>
   LogLevel debug
@@ -15,9 +16,34 @@ TypesDB "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>collectd/5.4.0/share/collectd/types.d
 LoadPlugin exec
 
 <Plugin exec>
-  Exec "<%=ENV['USER']%>" "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>/bin/scripts/cgroup_memory"
+  Exec "<%=ENV['USER']%>" "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>/scripts/openshift.sh"
 </Plugin>
 
+LoadPlugin processes
+<Plugin "processes">
+  ProcessMatch "/^java/"
+  ProcessMatch "/^node/"
+  ProcessMatch "/^php/"
+  ProcessMatch "/^ruby/"
+  ProcessMatch "/^python/"
+</Plugin>
+
+LoadPlugin load
+<Plugin "load">
+</Plugin>
+
+LoadPlugin memory
+<Plugin "memeory">
+</Plugin>
+
+
+LoadPlugin disk
+<Plugin "disk">
+  Disk "/^sd/"
+  Disk "/^xv/"
+  Disk "/^hd/"
+  IgnoreSelected false
+</Plugin>
 
 LoadPlugin network
 
@@ -40,6 +66,5 @@ LoadPlugin rrdtool
   StoreRates true
 </Plugin>
 
+
 <% end %>
-
-

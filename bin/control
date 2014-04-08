@@ -14,6 +14,7 @@ function start() {
       if [ "$OPENSHIFT_APP_DNS" == "$OPENSHIFT_GEAR_DNS" ]
       then 
         socat tcp4-listen:$OPENSHIFT_COLLECTD_PRIVATE_PORT,bind=$OPENSHIFT_COLLECTD_PRIVATE_IP,reuseaddr,fork UDP:$OPENSHIFT_COLLECTD_PRIVATE_IP:$OPENSHIFT_COLLECTD_PRIVATE_PORT&
+
       else
         # There appears to be a race condition between the time the public server port is published and the cartridge is started
         if [ "$OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT" != "" ]
@@ -23,13 +24,17 @@ function start() {
           echo "OPENSHIFT_COLLECTD_SERVER_PUBLIC_PORT == <empty>"
         fi
       fi
-
-      echo "Waiting 10 seconds to let socat start"
-      pause 10 
+      sleep 1 
     else
       echo "Socat is already running "
     fi
+     
 
+    if [ "$OPENSHIFT_APP_DNS" == "$OPENSHIFT_GEAR_DNS" ]
+    then 
+      # Start the simple python webserver
+      (cd ${OPENSHIFT_COLLECTD_DIR}/data && python server.py)& 
+    fi 
 
     if [ ! -f "${COLLECTD_PID_FILE}" ]
     then

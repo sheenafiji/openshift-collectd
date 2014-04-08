@@ -1,9 +1,0 @@
-#!/bin/bash
-
-HOSTNAME="${COLLECTD_HOSTNAME:-localhost}"
-INTERVAL="${COLLECTD_INTERVAL:-5}"
-
-while sleep "$INTERVAL"; do
-  VALUE=$(oo-cgroup-read memory.usage_in_bytes)
-  echo "PUTVAL \"$HOSTNAME/used/memory\" interval=$INTERVAL N:$VALUE"
-done
