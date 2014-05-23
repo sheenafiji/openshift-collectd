@@ -2,9 +2,9 @@
 Name: collectd
 Cartridge-Short-Name: COLLECTD
 Architecture: x86_64
-Display-Name: collectd 5.4.0
+Display-Name: collectd 5.4.1
 Description: collectd is a daemon which collects system performance statistics
-Version: '5.4.0'
+Version: '5.4.1'
 Cartridge-Version: 0.0.1
 Cartridge-Vendor: celer
 License: GPL
@@ -15,7 +15,7 @@ Categories:
   - plugin
 Website: http://collectd.org
 Provides:
-  - collectd-5.4.0
+  - collectd-5.4.1
   - collectd
 Scaling:
   Min: 1
@@ -24,7 +24,7 @@ Cart-Data:
   - Key: OPENSHIFT_COLLECTD_PUBLIC_SERVER_PORT 
 Group-Overrides:
   - components:
-    - collectd-5.4.0
+    - collectd-5.4.1
     - web_framework
 Source-Url: https://github.com/celer/openshift-collectd.git
 Endpoints:

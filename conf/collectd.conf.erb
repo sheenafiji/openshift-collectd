@@ -61,13 +61,6 @@ LoadPlugin network
   Listen "<%=ENV['OPENSHIFT_COLLECTD_PRIVATE_IP']%>" "<%=ENV['OPENSHIFT_COLLECTD_PRIVATE_PORT']%>"
 </Plugin>
 
-
-LoadPlugin rrdtool
-<Plugin "rrdtool">
-  DataDir "<%=ENV['OPENSHIFT_COLLECTD_DIR']%>data"
-  StoreRates true
-</Plugin>
-
 LoadPlugin mysql
 <Plugin "mysql">
 	<% ENV.each do |env| 
@@ -86,8 +79,8 @@ LoadPlugin mysql
 </Plugin>
 
 LoadPlugin write_http
-<Plugin "write_http">
-	<URL "http://"<%=ENV['OPENSHIFT_GEAR_DNS']%>":"<%=ENV['OPENSHIFT_COLLECTD_PRIVATE_PORT']%>"">
+<Plugin "write_http"> 
+	<URL "http:// <%=ENV['OPENSHIFT_GEAR_DNS']%> : <%=ENV['OPENSHIFT_COLLECTD_PRIVATE_PORT']%>">
 		Format "JSON"
 	</URL>
 </Plugin>
